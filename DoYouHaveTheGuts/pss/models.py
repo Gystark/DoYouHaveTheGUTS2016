@@ -42,7 +42,17 @@ TYPE_CHOICES = (
 )
 
 
-class Crime:
+class Station(models.Model):
+    """
+    Model to hold police station data
+    District 26 is headquarters
+    """
+    district = models.IntegerField(primary_key=True)
+    latitude = models.DecimalField(max_digits=10, decimal_places=10)
+    longitude = models.DecimalField(max_digits=10, decimal_places=10)
+
+
+class Crime(models.Model):
     """
     Model to hold crime data pulled from the City of Chicago dataset
     """
@@ -52,15 +62,5 @@ class Crime:
     type = models.CharField(max_length=255, choices=TYPE_CHOICES)
     subtype = models.CharField(max_length=255)
     district = models.ForeignKey(Station)
-    latitude = models.DecimalField(max_digits=10, decimal_places=10)
-    longitude = models.DecimalField(max_digits=10, decimal_places=10)
-
-
-class Station:
-    """
-    Model to hold police station data
-    District 26 is headquarters
-    """
-    district = models.IntegerField(primary_key=True)
     latitude = models.DecimalField(max_digits=10, decimal_places=10)
     longitude = models.DecimalField(max_digits=10, decimal_places=10)
