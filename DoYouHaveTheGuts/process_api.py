@@ -1,7 +1,7 @@
 import os
 import django
 import requests
-import decimal
+from decimal import Decimal
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DoYouHaveTheGuts.settings')
 django.setup()
 from pss.models import Crime, Station
@@ -50,8 +50,8 @@ def save_crime_data(data):
                                     type=crime['primary_type'],
                                     subtype=crime['description'],
                                     district=int(crime['district'][1:]),
-                                    latitude=crime['latitude'],
-                                    longitude=crime['longitude'])
+                                    latitude=Decimal(crime['latitude']),
+                                    longitude=Decimal(crime['longitude']))
 
 
 def save_station_data(data):
@@ -62,8 +62,8 @@ def save_station_data(data):
     """
     for station in data:
         Station.objects.get_or_create(district=station['district'],
-                                      latitude=station['latitude'],
-                                      longitude=station['longitude'])
+                                      latitude=Decimal(station['latitude']),
+                                      longitude=Decimal(station['longitude']))
 
 c_data = get_crime_data()
 st_data = get_station_data()
