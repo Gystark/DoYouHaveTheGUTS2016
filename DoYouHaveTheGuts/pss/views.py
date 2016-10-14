@@ -1,7 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
-
-
-def index(request):
-    return render(request, "pss/index.html", {})
+def index(req):
+    return render(req, "DoYouHaveTheGuts/index.html", {})

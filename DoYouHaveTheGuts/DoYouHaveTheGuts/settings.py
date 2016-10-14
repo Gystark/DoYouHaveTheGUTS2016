@@ -25,7 +25,7 @@ SECRET_KEY = 'o&5_pncyvpeo3&@^mg78jgra7y$$i2bcy@cj@^$a__$-p(#^b('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -68,11 +68,16 @@ TEMPLATES = [
     },
 ]
 
+TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')
+
+TEMPLATE_DIRS = (
+    TEMPLATE_PATH,
+)
+
 WSGI_APPLICATION = 'DoYouHaveTheGuts.wsgi.application'
 
-
 # Database
-# https://docs.djangoproject.com/en/1.10/ref/settings/#databases
+# https://docs.djangoproject.com/en/1.10/ref/settings/#database
 
 DATABASES = {
     'default': {
