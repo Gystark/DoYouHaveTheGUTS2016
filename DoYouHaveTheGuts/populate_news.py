@@ -17,6 +17,6 @@ def populate():
             description=description,
             body=body
         )
-        news_object.save()
+        news_object.save(send_notification=False)
     news_file.close()
 
