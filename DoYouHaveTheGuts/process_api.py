@@ -3,8 +3,8 @@ import django
 import requests
 from decimal import Decimal
 import _operator
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DoYouHaveTheGuts.settings')
-django.setup()
+#os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DoYouHaveTheGuts.settings')
+#django.setup()
 from pss.models import Crime, Station
 
 app_token = 'FDC7kyefIjOvwcMZ0Z9NkFJJ8'
@@ -71,14 +71,17 @@ def save_station_data(data):
         stat.save()
 
 
-def hottest_beats(district, start_time, end_time, type_of_crime):
+def hottest_beats(district, start_time, end_time):
     endpoint = 'https://data.cityofchicago.org/resource/6zsd-86xi.json'
-    url = "%s?district=%s&$where=date between '%s' and '%s'&primary_type=%s" % (
+    # url = "%s?district=%s" % (
+    #     endpoint,
+    #     district
+    # )
+    url = "%s?district=%s&$where=date between '%s' and '%s'" % (
         endpoint,
         district,
         start_time,
-        end_time,
-        type_of_crime
+        end_time
     )
 
     response = requests.get(url, headers=headers).json()
@@ -119,4 +122,4 @@ def hottest_beats(district, start_time, end_time, type_of_crime):
     return obj
 
 
-hottest_beats('005', '2011-01-10T12:00:00', '2015-01-10T12:00:00', 'ASSAULT')
+#hottest_beats('006', '2015-01-09T12:00:00', '2015-01-10T12:00:00', 'ASSAULT')
