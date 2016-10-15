@@ -74,7 +74,6 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
                 function (response, status) {
                     if (status === 'OK') {
                         directionsDisplay.setDirections(response);
-                        console.log('here');
                         heatmap = new google.maps.visualization.HeatmapLayer({
                             data: getPoints(),
                             map: map

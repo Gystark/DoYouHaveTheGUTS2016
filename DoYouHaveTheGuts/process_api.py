@@ -105,8 +105,8 @@ def hottest_beats(district, start_time, end_time, type_of_crime, all_types=False
             except KeyError:
                 pass
 
-    N = len(crime_map)
-    crime_map = sorted(crime_map.items(), key=_operator.itemgetter(1))[N-5:][::-1]
+    n = len(crime_map)
+    crime_map = sorted(crime_map.items(), key=_operator.itemgetter(1))[n-5:][::-1]
 
     obj = {'route': {}}
 
@@ -121,6 +121,5 @@ def hottest_beats(district, start_time, end_time, type_of_crime, all_types=False
         obj['route']['waypoints'].append({'location': item[1][1], 'stopover': False})
 
     obj['heatmap'] = entries
-    # print(obj)
     return obj
 

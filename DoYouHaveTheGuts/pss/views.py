@@ -26,7 +26,9 @@ def get_map_data(request):
             district=district,
             start_time='2011-01-10T12:00:00',
             end_time='2015-01-10T12:00:00',
-            type_of_crime=crime)
+            type_of_crime=crime,
+            all_types=(crime == "all")
+        )
 
         return JsonResponse(json_response)
     else:
