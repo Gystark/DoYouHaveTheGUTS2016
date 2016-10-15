@@ -2,9 +2,20 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from process_api import hottest_beats
 from pss.models import Station, TYPE_CHOICES
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 
 
 def index(req):
+    user = User.objects.get(
+        username='john')
+    print(user)
+    auth_user = authenticate(username=user.username, password=user.password)
+
+    if auth_user is not None:
+        print("Do we get here")
+        login(req, user)
+
     return render(req, "pss/index.html", {})
 
 

@@ -125,22 +125,26 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         }).done(function () {
             var startpoint = route['origin'];
             var destination = route['destination'];
+            var server_endpoints = route['waypoints'];
+            console.log(server_endpoints.length);
             var waypoints = [];
             var intermitent_route = {}
             // build the route by constructing smaller routes
-            for (var i = 0; i < entries.length; i += 8) {
+            for (var i = 0; i < server_endpoints.length; i += 8) {
                 var endpoint;
                 // choose an endpoint
-                if (entries.length < i + 8) {
+                if (server_endpoints.length < i + 8) {
                     endpoint = destination;
                 } else {
-                    endpoint = new google.maps.LatLng(entries[i + 7][0], entries[i + 7][1]);
+                    // endpoint = new google.maps.LatLng(entries[i + 7][0], entries[i + 7][1]);
+                    endpoint = server_endpoints[i]['location']
                 }
                 // build the waypoints
                 var j;
-                var loop_stop = (7 > entries.length - i) ? entries.length - i : 7;
+                var loop_stop = (7 > server_endpoints.length - i) ? (server_endpoints.length - i) : 6;
                 for (j = i; j < i + loop_stop; j++) {
-                    waypoints.push({'location': new google.maps.LatLng(entries[j][0], entries[j][1]), 'stopover': false});
+                    console.log(j);
+                    waypoints.push({'location': server_endpoints[j]['location'], 'stopover': false});
                 }
                 intermitent_route['origin'] = startpoint;
                 intermitent_route['destination'] = endpoint;
