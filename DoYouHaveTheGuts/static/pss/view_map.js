@@ -82,7 +82,7 @@ function changeGradient() {
         'rgba(127, 0, 63, 1)',
         'rgba(191, 0, 31, 1)',
         'rgba(255, 0, 0, 1)'
-    ]
+    ];
     heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
 }
 
