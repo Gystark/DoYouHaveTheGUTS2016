@@ -38,14 +38,14 @@ $(function () {
           //alert("Retrieved " + data.length + " records from the dataset!");
           console.log(data);
             var points = [];
-            for (var i = 0; i < data.length; i++) {
-                if (data[i]['latitude'] != null && data[i]['longitude'] != null)
-                points.push(new google.maps.LatLng(data[i]['latitude'], data[i]['longitude']));
-            }
-            heatmap = new google.maps.visualization.HeatmapLayer({
-                    data: points,
-                    map: map
-            });
+            // for (var i = 0; i < data.length; i++) {
+            //     if (data[i]['latitude'] != null && data[i]['longitude'] != null)
+            //     points.push(new google.maps.LatLng(data[i]['latitude'], data[i]['longitude']));
+            // }
+            // heatmap = new google.maps.visualization.HeatmapLayer({
+            //         data: points,
+            //         map: map
+            // });
             heat_on = true;
         });
     });
@@ -174,7 +174,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
                     directionsService.route(intermitent_route,
                         function (response, status) {
                             if (status === 'OK') {
-                                heatmap.setMap(null);
+                                //heatmap.setMap(null);
                                 heat_on = false;
                                 var customDirectionsDisplay = new google.maps.DirectionsRenderer({
                                     polylineOptions: {
