@@ -20,6 +20,3 @@ def populate():
         news_object.save()
     news_file.close()
 
-
-if __name__ == '__main__':
-    populate()
