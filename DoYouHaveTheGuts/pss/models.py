@@ -3,7 +3,8 @@ Models for pss
 """
 from django.db import models
 from django.template.defaultfilters import slugify
-
+from django.contrib.auth.models import User
+from notify.signals import notify
 
 
 # Based on https://www.isp.state.il.us/docs/6-260.pdf
@@ -58,6 +59,7 @@ class Station(models.Model):
     def __str__(self):
         return str(self.district)
 
+
 class News(models.Model):
     """
      Model to hold data for each individual
@@ -69,7 +71,12 @@ class News(models.Model):
     slug = models.SlugField()
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.question)
+        if self.id is None:
+            admin = User.objects.filter(is_superuser=True)[0]
+            users = list(User.objects.all().exclude(id=admin.id))
+            notify.send(sender=admin, recipient_list=users, actor=admin,
+                        verb='New information added', description=self.title, nf_type='success')
+        self.slug = slugify(self.title)
         super(News, self).save(*args, **kwargs)
 
     def __str__(self):
