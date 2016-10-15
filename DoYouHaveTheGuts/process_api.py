@@ -126,8 +126,8 @@ def hottest_beats(district, start_time, end_time, type_of_crime, all_types=False
         street_stop = sorted(item[1][1].items(), key=lambda structure: structure[1])
         print(street_stop[-1])
         obj['route']['waypoints'].append({'location': street_stop[-1][0], 'stopover': False})
-        if len(obj['route']['waypoints']) < 7:
-            obj['route']['waypoints'].append({'location': street_stop[-2][0], 'stopover': False})
+        # if len(obj['route']['waypoints']) < 7:
+        obj['route']['waypoints'].append({'location': street_stop[-2][0], 'stopover': False})
     obj['heatmap'] = entries
     return obj
 
