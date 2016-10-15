@@ -112,24 +112,26 @@ def hottest_beats(district, start_time, end_time, type_of_crime, all_types=False
     n = len(crime_map)
 
     crime_map = sorted(crime_map.items(), key=_operator.itemgetter(0))[n-5:][::-1]
-    # print(crime_map)
-    obj = {'route': {}}
+
+    route_info = {}
     station = Station.objects.get(district=district)
 
-    obj['route']['origin'] = station.address
-    obj['route']['destination'] = station.address
-    obj['route']['travelMode'] = 'DRIVING'
-    # obj['route']['optimizeWaypoints'] = True
-    obj['route']['waypoints'] = []
+    route_info['origin'] = station.address
+    route_info['destination'] = station.address
+    route_info['travelMode'] = 'DRIVING'
+    # route_info['route']['optimizeWaypoints'] = True
+    route_info['waypoints'] = []
 
     for item in crime_map:
         street_stop = sorted(item[1][1].items(), key=lambda structure: structure[1])
-        print(street_stop[-1])
-        obj['route']['waypoints'].append({'location': street_stop[-1][0], 'stopover': False})
-        # if len(obj['route']['waypoints']) < 7:
-        obj['route']['waypoints'].append({'location': street_stop[-2][0], 'stopover': False})
-    obj['heatmap'] = entries
-    return obj
+        for i in range(4):
+            try:
+                route_info['waypoints'].append({'location': street_stop[-(i + 1)][0], 'stopover': False})
+            except Exception:
+                break
+
+    route_info['heatmap'] = entries
+    return route_info
 
 # save
 # save_station_data(get_station_data())

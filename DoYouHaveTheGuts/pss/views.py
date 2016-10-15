@@ -4,8 +4,12 @@ from process_api import hottest_beats
 from pss.models import Station, TYPE_CHOICES
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm
+from django.views.generic import CreateView
+from django.contrib.auth.decorators import login_required
 
 
+@login_required()
 def index(req):
     user = User.objects.get(
         username='john')
@@ -46,3 +50,9 @@ def get_map_data(request):
         return JsonResponse(json_response)
     else:
         return render(request, "pss/view_map.html", {})
+
+
+class UserRegistrationView(CreateView):
+    form_class = UserCreationForm
+    template_name = 'registration/registration.html'
+    success_url = '/login'

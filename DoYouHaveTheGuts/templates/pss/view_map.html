@@ -1,64 +1,77 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block static_per_page %}
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <title>Directions service</title>
-    <style>
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      #map {
-        height: 100%;
-      }
-      #floating-panel {
-        position: absolute;
-        top: 10px;
-        left: 25%;
-        z-index: 5;
-        background-color: #fff;
-        padding: 5px;
-        border: 1px solid #999;
-        text-align: center;
-        font-family: 'Roboto','sans-serif';
-        line-height: 30px;
-        padding-left: 10px;
-      }
-    </style>
-    <script src="{% static 'pss/view_map.js' %}"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlVrFeXvJ6O2ejJz79L1etyvLlUQhDBmo&libraries=visualization&callback=initMap"></script>
-
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  <title>Directions service</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    #map {
+      height: 80%;
+    }
+    #floating-panel {
+      position: absolute;
+      top: 10px;
+      left: 25%;
+      z-index: 5;
+      background-color: #fff;
+      padding: 5px;
+      border: 1px solid #999;
+      text-align: center;
+      font-family: 'Roboto','sans-serif';
+      line-height: 30px;
+      padding-left: 10px;
+    }
+  </style>
+  <script src="{% static 'pss/view_map.js' %}"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlVrFeXvJ6O2ejJz79L1etyvLlUQhDBmo&libraries=visualization&callback=initMap"></script>
 {% endblock %}
-<div class="row">
+
 {% block content %}
-{#    <input type="text" name="daterange" value="01/01/2015 - 01/31/2015" />#}
-    <div id="reportrange" class="reportrange" style="display: inline">
-        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-        <span id="daterange-picker-holder"></span> <b class="caret"></b>
-    </div>
-    <script>
-        $('input[name="daterange"]').daterangepicker();
+<div class="row">
+  <input class="form-control" type="text" name="daterange" value="01/01/2015 - 01/31/2015"
+    style="margin-left:20px"/>
+  <script>
+    $('input[name="daterange"]').daterangepicker();
+  </script>
+
+  <div class="dropdown" style="margin-left:20px">
+    <button class="btn btn-default dropdown-toggle" type="button" id="district-dropdown"
+      data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      1
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+    {% for district in districts %}
+      <li class="district-select" value="{{ district.district }}">{{ district.district }}</option>
+    {% endfor %}
+    </ul>
+  </div>
 
 
-    </script>
-    <select id="district-dropdown">
-        {% for district in districts %}
-            <option class="district-select" value="{{ district.district }}">{{ district.name }}</option>
-        {% endfor %}
-    </select>
+  <div class="dropdown" style="margin-left:20px">
+    <button class="btn btn-default dropdown-toggle" type="button" id="crime-dropdown"
+      data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      All
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+    {% for crime in types_of_crime %}
+      <li class="crime-select" value="{{ crime }}">{{ crime }}</option>
+    {% endfor %}
+    </ul>
+  </div>
 
-    <select id="crime-dropdown">
-        <option value="all">All</option>
-        {% for crime in types_of_crime %}
-            <option class="crime-select" value="{{ crime }}">{{ crime }}</option>
-        {% endfor %}
-    </select>
-
-    <button id="submit-route-query" type="button">Submit</button>
-
-    <div id="map"></div>
+  <button id="submit-route-query" class="btn btn-default" type="submit" style="margin-left:20px">
+    Submit
+  </button>
 </div>
-{% endblock %}
+<br/>
 
+<div id="map"></div>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+<p data-nf-id="{{ notification.id }}" id="nf-{{ notification.id }}"
+   class="notification alert alert-success text-center">
+    {% block notification %}
+        {{ notification.verb }}
+        <span class="timesince">{{ notification.created|timesince }} ago &nbsp;</span>
+        {% if notification.description != None %}
+            <br>{{ notification.description }}
+        {% endif %}
+        {% if notification.obj_text != None %}
+            <br><a href="{{ notification.obj_url_text }}" target="_blank">{{ notification.obj_text }}</a>
+        {% endif %}
+    {% endblock notification %}
+
+    <button class="delete-notification btn btn-secondary" data-id="{{ notification.id }}">
+        <i class="glyphicon glyphicon-remove-circle"></i>
+    </button>
+
+</p>
