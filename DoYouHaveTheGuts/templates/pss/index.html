@@ -1,23 +1,10 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% block content %}
-    <select id="district-dropdown">
-        {% for district in districts %}
-            <option class="district-select" value="{{ district.district }}">{{ district.district }}</option>
-        {% endfor %}
-    </select>
 
-    <select id="crime-dropdown">
-        <option value="all">All</option>
-        {% for crime in types_of_crime %}
-            <option class="crime-select" value="{{ crime }}">{{ crime }}</option>
-        {% endfor %}
-    </select>
-
-    <button id="submit-route-query" type="button">Submit</button>
-
-    <a href="/map/">Map</a>
-{% endblock %}
 {% block static_per_page %}
-    <script src="{% static 'pss/index.js' %}" ></script>
+    <!-- <script src="{% static 'pss/index.js' %}" ></script> -->
+{% endblock %}
+
+{% block content %}
+
 {% endblock %}
