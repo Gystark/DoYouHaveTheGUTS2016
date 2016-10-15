@@ -51,6 +51,9 @@ class Station(models.Model):
     latitude = models.DecimalField(max_digits=30, decimal_places=15)
     longitude = models.DecimalField(max_digits=30, decimal_places=15)
 
+    def __str__(self):
+        return str(self.district)
+
 
 class Crime(models.Model):
     """
@@ -64,3 +67,6 @@ class Crime(models.Model):
     district = models.ForeignKey(Station)
     latitude = models.DecimalField(max_digits=30, decimal_places=15)
     longitude = models.DecimalField(max_digits=30, decimal_places=15)
+
+    def __str__(self):
+        return str(self.crime_id)

@@ -26,7 +26,7 @@ def get_crime_data():
 
 
 def get_station_data():
-    url = "https://data.cityofchicago.org/resource/9rg7-mz9y.json" + "?$limit=" + str(num_entries)
+    url = "https://data.cityofchicago.org/resource/9rg7-mz9y.json"
     data = ''
 
     response = requests.get(url, headers=headers)
@@ -44,14 +44,15 @@ def save_crime_data(data):
     :param data: a list of dictionaries of crime datato save
     """
     for crime in data:
-        Crime.objects.get_or_create(crime_id=crime['id'],
+        cr = Crime.objects.get_or_create(crime_id=crime['id'],
                                     date=crime['date'],
                                     block=crime['block'],
                                     type=crime['primary_type'],
                                     subtype=crime['description'],
-                                    district=int(crime['district'][1:]),
+                                    district=Station.objects.get(district=int(crime['district'])),
                                     latitude=Decimal(crime['latitude']),
-                                    longitude=Decimal(crime['longitude']))
+                                    longitude=Decimal(crime['longitude']))[0]
+        cr.save()
 
 
 def save_station_data(data):
@@ -61,9 +62,12 @@ def save_station_data(data):
     :param data: a list of dictionaries of station data
     """
     for station in data:
-        Station.objects.get_or_create(district=station['district'],
+        if station['district'] == "Headquarters":
+            station['district'] = '26'
+        stat = Station.objects.get_or_create(district=int(station['district']),
                                       latitude=Decimal(station['latitude']),
-                                      longitude=Decimal(station['longitude']))
+                                      longitude=Decimal(station['longitude']))[0]
+        stat.save()
 
 c_data = get_crime_data()
 st_data = get_station_data()
