@@ -8,7 +8,8 @@ from django.views.generic import CreateView
 
 
 def index(req):
-    return render(req, "pss/index.html", {})
+    news = News.objects.all();
+    return render(req, "pss/index.html", {'news': news})
 
 
 def view_map(req):

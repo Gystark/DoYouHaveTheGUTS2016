@@ -69,7 +69,7 @@ class News(models.Model):
     slug = models.SlugField()
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.question)
+        self.slug = slugify(self.title)
         super(News, self).save(*args, **kwargs)
 
     def __str__(self):
