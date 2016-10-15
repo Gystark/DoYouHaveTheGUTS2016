@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from process_api import hottest_beats
+from pss.models import Station, TYPE_CHOICES, News
 from pss.models import Station, TYPE_CHOICES
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
@@ -92,6 +93,25 @@ def get_map_data(request):
         return JsonResponse(json_response)
     else:
         return render(request, "pss/view_map.html", {})
+
+
+# def search(request):
+#     if request.GET:
+#         search_term = request.GET['search-term']
+#     else:
+#         search_term = ''
+#     news = News.objects.filter(title__icontains=search_term) or \
+#            News.objects.filter(description__icontains=search_term) or \
+#            News.objects.filter(body__icontains=search_term)
+#     return render(request, 'pss/search.html', {'news': news})
+
+
+# def view_piece_of_news(request, piece_of_news_name_slug):
+#     context = {}
+#     if request.method == "GET":
+#         piece_of_news = News.objects.get(slug=piece_of_news_name_slug)
+#         context['piece_of_news'] = piece_of_news
+#     return render(request, 'pss/piece_of_news.html', context)
 
 
 class UserRegistrationView(CreateView):
