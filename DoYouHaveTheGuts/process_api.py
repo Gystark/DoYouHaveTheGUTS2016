@@ -45,15 +45,18 @@ def save_crime_data(data):
     :param data: a list of dictionaries of crime datato save
     """
     for crime in data:
-        cr = Crime.objects.get_or_create(crime_id=crime['id'],
-                                    date=crime['date'],
-                                    block=crime['block'],
-                                    type=crime['primary_type'],
-                                    subtype=crime['description'],
-                                    district=Station.objects.get(district=int(crime['district'])),
-                                    latitude=Decimal(crime['latitude']),
-                                    longitude=Decimal(crime['longitude']))[0]
-        cr.save()
+        try:
+            cr = Crime.objects.get_or_create(crime_id=crime['id'],
+                                        date=crime['date'],
+                                        block=crime['block'],
+                                        type=crime['primary_type'],
+                                        subtype=crime['description'],
+                                        district=Station.objects.get(district=int(crime['district'])),
+                                        latitude=Decimal(crime['latitude']),
+                                        longitude=Decimal(crime['longitude']))[0]
+            cr.save()
+        except KeyError:
+            pass
 
 
 def save_station_data(data):
@@ -67,19 +70,22 @@ def save_station_data(data):
             station['district'] = '26'
         stat = Station.objects.get_or_create(district=int(station['district']),
                                       latitude=Decimal(station['latitude']),
-                                      longitude=Decimal(station['longitude']))[0]
+                                      longitude=Decimal(station['longitude']),
+                                      name=station['district_name'])[0]
         stat.save()
 
 
-def hottest_beats(district, start_time, end_time, type_of_crime):
+def hottest_beats(district, start_time, end_time, type_of_crime, all_types=False):
     endpoint = 'https://data.cityofchicago.org/resource/6zsd-86xi.json'
-    url = "%s?district=%s&$where=date between '%s' and '%s'&primary_type=%s" % (
+    url = "%s?district=%s&$where=date between '%s' and '%s'" % (
         endpoint,
         district,
         start_time,
-        end_time,
-        type_of_crime
+        end_time
     )
+
+    if not all_types:
+        url = url + "&primary_type=" + type_of_crime
 
     response = requests.get(url, headers=headers).json()
 
@@ -115,8 +121,11 @@ def hottest_beats(district, start_time, end_time, type_of_crime):
         obj['route']['waypoints'].append({'location': item[1][1], 'stopover': False})
 
     obj['heatmap'] = entries
-    print(obj)
+    # print(obj)
     return obj
 
 
-hottest_beats('005', '2011-01-10T12:00:00', '2015-01-10T12:00:00', 'ASSAULT')
+# hottest_beats('005', '2011-01-10T12:00:00', '2015-01-10T12:00:00', 'ASSAULT')
+if __name__ == '__main__':
+    save_station_data(get_station_data())
+    save_crime_data(get_crime_data())
