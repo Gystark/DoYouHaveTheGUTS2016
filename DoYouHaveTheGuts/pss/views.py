@@ -4,8 +4,10 @@ from process_api import hottest_beats
 from pss.models import Station, TYPE_CHOICES
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView
+from django.contrib.auth.decorators import login_required
 
 
+@login_required()
 def index(req):
     return render(req, "pss/index.html", {})
 
