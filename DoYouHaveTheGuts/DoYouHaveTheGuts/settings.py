@@ -60,6 +60,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'notifications')],
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -126,6 +127,7 @@ STATICFILES_DIRS = [
 ]
 STATIC_URL = '/static/'
 
+STATIC_ROOT = '/static/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
