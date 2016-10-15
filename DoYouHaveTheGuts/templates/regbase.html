@@ -1,0 +1,25 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head><title>{% block title %}Chicago PSS{% endblock %}</title>
+    <script src="{% static 'pss/jquery.min.js' %}"></script>
+    <script src="{% static 'pss/bootstrap.min.js' %}"></script>
+    <script src="{% static 'pss/moment.min.js' %}"></script>
+    <script src="{% static 'pss/daterangepicker.js' %}"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'pss/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pss/css/daterangepicker.css' %}"/>
+
+    {% block static_per_page %}{% endblock %}
+</head>
+
+<body>
+{% block content %}
+
+{% endblock %}
+
+
+</body>
+
+
+</html>

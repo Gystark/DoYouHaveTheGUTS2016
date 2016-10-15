@@ -52,6 +52,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'pss.middleware.LoginRequiredMiddleware',
+    'pss.middleware.LoginRedirectMiddleware'
 ]
 
 ROOT_URLCONF = 'DoYouHaveTheGuts.urls'
@@ -131,7 +133,9 @@ STATIC_ROOT = '/static/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-LOGIN_url = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'index'
 REDIRECT_URL = '/'
+
+EXEMPT_URLS = []

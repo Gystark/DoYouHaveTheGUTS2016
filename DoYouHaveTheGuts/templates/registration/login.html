@@ -1,13 +1,13 @@
+{% extends 'regbase.html' %}
 {% load crispy_forms_tags %}
-{% block content %}
-    <div class="row">
-        <div class="col-md-5 col-md-offset-3"><h1>Login</h1>
-            <form action="/login/" method="post">{% csrf_token %}
-                {{ form | crispy }}
 
-                <input type="hidden" name="next" value="{{ next }}"/>
-                <input type="submit" value="Submit"/>
-            </form>
-        </div>
-    </div>
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="col-md-6 col-md-offset-3">  <h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form></div>
 {% endblock %}
