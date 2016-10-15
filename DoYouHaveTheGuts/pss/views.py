@@ -5,9 +5,13 @@ from pss.models import Station, TYPE_CHOICES
 
 
 def index(req):
+    return render(req, "pss/index.html", {})
+
+
+def view_map(req):
     stations = Station.objects.all()
     types_of_crime = [x[0] for x in TYPE_CHOICES]
-    return render(req, "pss/index.html", {
+    return render(req, 'pss/view_map.html', {
         'districts': stations,
         'types_of_crime': types_of_crime
     })
@@ -26,4 +30,4 @@ def get_map_data(request):
 
         return JsonResponse(json_response)
     else:
-        return render(request, "pss/temp.html", {})
+        return render(request, "pss/view_map.html", {})
