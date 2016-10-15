@@ -1,5 +1,52 @@
 var heatmap, map;
 
+/* functions about interacting with the daterange picker */
+$(function () {
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    }
+
+    $('#reportrange span').daterangepicker({
+        autoUpdateInput: false,
+        locale: {
+            cancelLabel: 'Clear'
+        }
+    });
+
+    $('#reportrange').daterangepicker({
+        ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    }, cb);
+});
+
+function getDateRangePickerEndDate() {
+    /* If there is no range displayed inside the span, this means we want to get
+     * all the orders, so simply return undefined in that case
+     */
+    var span_content = $('#daterange-picker-holder').html();
+    if(span_content === ''){
+        return undefined;
+    }
+    return $('#reportrange').data('daterangepicker').endDate.format('YYYY-MM-DDT23:59:59');
+}
+
+function getDateRangePickerStartDate(){
+    /* If there is no range displayed inside the span, this means we want to get
+     * all the orders, so simply return undefined in that case
+     */
+    var span_content = $('#daterange-picker-holder').html();
+    if(span_content === ''){
+        return undefined;
+    }
+    return $('#reportrange').data('daterangepicker').startDate.format('YYYY-MM-DDT00:00:00');
+}
+
 function initMap() {
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -52,7 +99,7 @@ function getPoints() {
 
     var points = [];
     for (var i = 0; i < entries.length; i++) {
-        points.push(new google.maps.LatLng(entries[i][0], entries[i][1]))
+        points.push(new google.maps.LatLng(entries[i][0], entries[i][1]));
     }
 
     return points;
@@ -61,15 +108,24 @@ function getPoints() {
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
     var district = $('#district-dropdown').find(':selected').attr('value');
     var crime = $('#crime-dropdown').find(':selected').attr('value');
+    var start_date = getDateRangePickerStartDate();
+    var end_date = getDateRangePickerEndDate();
     
     $.get(
         '/get_map_data/', 
-        {'district': district, 'crime': crime}, 
+        {
+            'district': district,
+            'crime': crime,
+            'start_date': start_date,
+            'end_date': end_date
+        }, 
         function (data) {
             route = data['route'];
             entries = data['heatmap'];
         }).done(function () {
+            var startpoint = route['origin'];
         
+                
             directionsService.route(route,
                 function (response, status) {
                     if (status === 'OK') {
@@ -78,6 +134,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
                             data: getPoints(),
                             map: map
                         });
+                        $('#submit-route-query').after("<span>Success</span>");
                     } else {
                         window.alert('Directions request failed due to ' + status);
                     }

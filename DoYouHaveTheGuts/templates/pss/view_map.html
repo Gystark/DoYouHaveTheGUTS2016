@@ -33,13 +33,19 @@
 {% endblock %}
 <div class="row">
 {% block content %}
-    <input type="text" name="daterange" value="01/01/2015 - 01/31/2015" />
+{#    <input type="text" name="daterange" value="01/01/2015 - 01/31/2015" />#}
+    <div id="reportrange" class="reportrange" style="display: inline">
+        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+        <span id="daterange-picker-holder"></span> <b class="caret"></b>
+    </div>
     <script>
         $('input[name="daterange"]').daterangepicker();
+
+
     </script>
     <select id="district-dropdown">
         {% for district in districts %}
-            <option class="district-select" value="{{ district.district }}">{{ district.district }}</option>
+            <option class="district-select" value="{{ district.district }}">{{ district.name }}</option>
         {% endfor %}
     </select>
 

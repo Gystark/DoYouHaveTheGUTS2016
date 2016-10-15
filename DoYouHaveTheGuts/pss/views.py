@@ -19,13 +19,15 @@ def view_map(req):
 
 def get_map_data(request):
     if request.is_ajax():
-        district = str(request.GET['district']).zfill(3)
+        district = request.GET['district']
         crime = request.GET['crime']
+        start_date = request.GET['start_date']
+        end_date = request.GET['end_date']
 
         json_response = hottest_beats(
             district=district,
-            start_time='2011-01-10T12:00:00',
-            end_time='2015-01-10T12:00:00',
+            start_time=start_date,
+            end_time=end_date,
             type_of_crime=crime,
             all_types=(crime == "all")
         )

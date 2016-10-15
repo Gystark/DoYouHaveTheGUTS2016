@@ -3,8 +3,8 @@ import django
 import requests
 from decimal import Decimal
 import _operator
-#os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DoYouHaveTheGuts.settings')
-#django.setup()
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DoYouHaveTheGuts.settings')
+django.setup()
 from pss.models import Crime, Station
 
 app_token = 'FDC7kyefIjOvwcMZ0Z9NkFJJ8'
@@ -71,6 +71,7 @@ def save_station_data(data):
         stat = Station.objects.get_or_create(district=int(station['district']),
                                       latitude=Decimal(station['latitude']),
                                       longitude=Decimal(station['longitude']),
+                                      address=station['address'],
                                       name=station['district_name'])[0]
         stat.save()
 
@@ -79,7 +80,7 @@ def hottest_beats(district, start_time, end_time, type_of_crime, all_types=False
     endpoint = 'https://data.cityofchicago.org/resource/6zsd-86xi.json'
     url = "%s?district=%s&$where=date between '%s' and '%s'" % (
         endpoint,
-        district,
+        str(district).zfill(3),
         start_time,
         end_time
     )
@@ -93,33 +94,43 @@ def hottest_beats(district, start_time, end_time, type_of_crime, all_types=False
     entries = []
 
     for entry in response:
+
         if entry['beat'] in crime_map:
+            street = str(entry['block'])[6:] + ", Chicago"
             crime_map[entry['beat']][0] += 1
+            crime_map[entry['beat']][1][street] = crime_map[entry['beat']][1].get(street, 0) + 1
         else:
             try:
                 lat, long = entry['latitude'], entry['longitude']
                 entries.append((lat, long))
 
                 street = str(entry['block'])[6:] + ", Chicago"
-                crime_map[entry['beat']] = [1, street]
+                crime_map[entry['beat']] = [1, {street: 1}]
             except KeyError:
                 pass
 
     n = len(crime_map)
-    crime_map = sorted(crime_map.items(), key=_operator.itemgetter(1))[n-5:][::-1]
 
+    crime_map = sorted(crime_map.items(), key=_operator.itemgetter(0))[n-5:][::-1]
+    # print(crime_map)
     obj = {'route': {}}
+    station = Station.objects.get(district=district)
 
-    obj['route']['origin'] = "727 E 111th St"
-    obj['route']['destination'] = "727 E 111th St"
+    obj['route']['origin'] = station.address
+    obj['route']['destination'] = station.address
     obj['route']['travelMode'] = 'DRIVING'
-
+    # obj['route']['optimizeWaypoints'] = True
     obj['route']['waypoints'] = []
 
     for item in crime_map:
-        print(item)
-        obj['route']['waypoints'].append({'location': item[1][1], 'stopover': False})
-
+        street_stop = sorted(item[1][1].items(), key=lambda structure: structure[1])
+        print(street_stop[-1])
+        obj['route']['waypoints'].append({'location': street_stop[-1][0], 'stopover': False})
+        if len(obj['route']['waypoints']) < 7:
+            obj['route']['waypoints'].append({'location': street_stop[-2][0], 'stopover': False})
     obj['heatmap'] = entries
     return obj
 
+# save
+# save_station_data(get_station_data())
+# save_crime_data(get_crime_data())
