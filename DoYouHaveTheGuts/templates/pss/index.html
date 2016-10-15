@@ -1,38 +1,52 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% block static_per_page %}
+    <script>window.twttr = (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0],
+                t = window.twttr || {};
+        if (d.getElementById(id)) return t;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js, fjs);
+
+        t._e = [];
+        t.ready = function (f) {
+            t._e.push(f);
+        };
+
+        return t;
+    }(document, "script", "twitter-wjs"));</script>
+{% endblock %}
 {% block content %}
-    <select id="district-dropdown">
-        {% for district in districts %}
-            <option class="district-select" value="{{ district.district }}">{{ district.district }}</option>
-        {% endfor %}
-    </select>
 
-    <select id="crime-dropdown">
-        <option value="all">All</option>
-        {% for crime in types_of_crime %}
-            <option class="crime-select" value="{{ crime }}">{{ crime }}</option>
-        {% endfor %}
-    </select>
-
-    <button id="submit-route-query" type="button">Submit</button>
-
-    <a href="/map/">Map</a>
-
-    <div class="jumbotron text-center search_bg">
-        <h1 style="margin-top:-5px; color:#ffffff; text-shadow: 2px 2px #000000;">Your first point for local police news</h1>
-        <br/>
-        <form autocomplete="off" class="form-horizontal" action="/search/" method="get"
-              accept-charset="utf-8">
-            <div class="input-group">
-                <input value="" class="form-control input-lg" placeholder="What do you need help with?" type="text"
-                       name="search-term" id="search-term">
-            <span class="input-group-btn">
+    <div class="content">
+        <div class="jumbotron text-center search_bg">
+            <h1 style="margin-top:-5px; color:#ffffff; text-shadow: 2px 2px #000000;">Your first point for local police
+                news</h1>
+            <br/>
+            <div class="col-md-10 col-md-offset-1">
+                <form autocomplete="off" class="form-horizontal" action="/search/" method="get"
+                      accept-charset="utf-8">
+                    <div class="input-group">
+                        <input value="" class="form-control input-lg" placeholder="What do you need help with?"
+                               type="text"
+                               name="search-term" id="search-term">
+                        <span class="input-group-btn">
                <button class="btn btn-default btn-lg" type="submit" id="addressSearch">
                    <i class="glyphicon glyphicon-search" aria-hidden="true"></i>
                </button>
             </span>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
+        <div class="col-md-4 col-md-offset-1"><a class="twitter-timeline"
+                                                 href="https://twitter.com/Chicago_Police" height="1500px">
+            Tweets from the Chicago Police
+        </a></div>
     </div>
+
+    {% include 'pss/news_table.html' %}
 
 {% endblock %}

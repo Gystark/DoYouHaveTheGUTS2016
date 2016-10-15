@@ -12,11 +12,75 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'pss/css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'pss/css/daterangepicker.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'pss/css/custom.css' %}">
 
     {% block static_per_page %}{% endblock %}
 </head>
 
 <body>
+<nav class="navbar navbar-default bars " id="nav">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand a-disabled" href="#">Chicago PSS</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right menuitems">
+                <li><a href="/"><span class="glyphicon glyphicon-home"></span> <span class="sr-only">(current)</span></a>
+                </li>
+                <li><a href="/map/">Map</a></li>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<!--status bar -->
+<nav class="navbar navbar-default bars" id="statusbar">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                {% if user.is_authenticated %}
+                    <li><a href="#" class="a-disabled">Welcome <strong>{{ user.username }}</strong></a></li>
+                    <li><a href="#" class="a-disabled"><i
+                            class="glyphicon glyphicon-time"></i>&nbsp;{% now "" %}</a></li>
+                {% else %}
+                    <li><a href="#" class="a-disabled"><i
+                            class="glyphicon glyphicon-time"></i>&nbsp;{% now "" %}</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right menuitems">
+                {% if user.is_authenticated %}
+                    <li><a href="#">{{ user.notifications.active.count }} notifications</a></li>
+                    <li><a href="/logout/">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login / register</a></li>
+                {% endif %}
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
 <script src="{% static "notify/notifyX.js" %}"></script>
 <div class="row">
     <div class="notification-box-list">
@@ -25,32 +89,10 @@
         {% endif %}
     </div>
 </div>
+
 {% block content %}
 
 {% endblock %}
-<div>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <h2 style="padding-left:150px">Chicago PSS</h2>
-            </div>
-            <div>
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <h3 style="margin-right:10px">
-                            <a href="/map/">Map</a>
-                        </h3>
-                    </li>
-                    <li>
-                        <button type="button" class="btn btn-default" style="margin-right:150px;margin-top:15px">
-                            <span class="glyphicon glyphicon-home"></span>
-                        </button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</div>
 
 </body>
 

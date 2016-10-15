@@ -1,0 +1,21 @@
+/*.content {*/
+    /*padding-top: 70px;*/
+/*}*/
+
+.menuitems {
+    margin-right: 1%;
+}
+
+.bars {
+    margin-bottom: 0;
+}
+
+#statusbar {
+    background: lightblue;
+}
+
+.a-disabled {
+    pointer-events: none;
+    cursor: default;
+}
+
