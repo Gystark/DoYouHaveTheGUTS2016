@@ -123,6 +123,8 @@ ENV/
 # IntelliJ
 /out/
 
+DoYouHaveTheGuts/db.sqlite3
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
@@ -137,3 +139,4 @@ fabric.properties
 
 .gitignore
 .idea/
+DoYouHaveTheGuts/pss/migrations/0001_initial.py

@@ -86,6 +86,7 @@
         });
     </script>
     <script>
+      var heatmap;
       function initMap() {
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -136,7 +137,12 @@
 
       // Heatmap data: 500 Points
       function getPoints() {
+          var points = [];
+        for (var i = 0; i < entries.length; i++) {
+            points.push(new google.maps.LatLng(entries[i][2], entries[i][1]))
+        }
 
+        return points;
       }
 
         var onChangeHandler = function() {
@@ -158,7 +164,7 @@
       }
     </script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlVrFeXvJ6O2ejJz79L1etyvLlUQhDBmo&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlVrFeXvJ6O2ejJz79L1etyvLlUQhDBmo&libraries=visualization&callback=initMap">
     </script>
   </body>
 </html>
