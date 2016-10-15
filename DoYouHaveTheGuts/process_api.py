@@ -3,8 +3,8 @@ import django
 import requests
 from decimal import Decimal
 import _operator
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DoYouHaveTheGuts.settings')
-django.setup()
+#os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DoYouHaveTheGuts.settings')
+#django.setup()
 from pss.models import Crime, Station
 
 app_token = 'FDC7kyefIjOvwcMZ0Z9NkFJJ8'
@@ -124,8 +124,3 @@ def hottest_beats(district, start_time, end_time, type_of_crime, all_types=False
     # print(obj)
     return obj
 
-
-# hottest_beats('005', '2011-01-10T12:00:00', '2015-01-10T12:00:00', 'ASSAULT')
-if __name__ == '__main__':
-    save_station_data(get_station_data())
-    save_crime_data(get_crime_data())
