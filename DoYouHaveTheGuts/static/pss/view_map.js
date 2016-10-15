@@ -1,4 +1,5 @@
 var heatmap, map, entries;
+var heat_on = false;
 
 /* functions about interacting with the daterange picker */
 $(function () {
@@ -23,6 +24,31 @@ $(function () {
             'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
     }, cb);
+
+    $('#turn-heat-on').on('change', function() {
+        var url = "https://data.cityofchicago.org/resource/6zsd-86xi.json?$where=date between '2015-01-10T12:00:00' and '2016-01-10T14:00:00'";
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: {
+              "$limit" : 5000,
+              "$$app_token" : "FDC7kyefIjOvwcMZ0Z9NkFJJ8"
+            }
+        }).done(function(data) {
+          //alert("Retrieved " + data.length + " records from the dataset!");
+          console.log(data);
+            var points = [];
+            for (var i = 0; i < data.length; i++) {
+                if (data[i]['latitude'] != null && data[i]['longitude'] != null)
+                points.push(new google.maps.LatLng(data[i]['latitude'], data[i]['longitude']));
+            }
+            heatmap = new google.maps.visualization.HeatmapLayer({
+                    data: points,
+                    map: map
+            });
+            heat_on = true;
+        });
+    });
 });
 
 function getDateRangePickerEndDate() {
@@ -51,7 +77,7 @@ function initMap() {
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 7,
+        zoom: 12,
         center: {lat: 41.85, lng: -87.65}
     });
     directionsDisplay.setMap(map);
@@ -148,6 +174,8 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
                     directionsService.route(intermitent_route,
                         function (response, status) {
                             if (status === 'OK') {
+                                heatmap.setMap(null);
+                                heat_on = false;
                                 var customDirectionsDisplay = new google.maps.DirectionsRenderer({
                                     polylineOptions: {
                                         strokeColor: route_colors[color_counter]

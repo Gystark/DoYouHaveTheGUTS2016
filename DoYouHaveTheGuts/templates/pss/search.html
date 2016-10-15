@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row text-center">
+    <h2>Search results</h2>
+        <div class="col-sm-8 col-sm-offset-3">
+            {% if questions %}
+                <h3>News results:</h3>
+            {% endif %}
+            {% for piece_of_news in news %}
+                <p><a href="/news/{{ piece_of_news.slug }}"><strong>{{ piece_of_news.title }}</strong></a></p>
+                <p>{{ piece_of_news.description }}</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
