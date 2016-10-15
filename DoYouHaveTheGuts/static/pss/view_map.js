@@ -1,4 +1,4 @@
-var heatmap, map;
+var heatmap, map, entries;
 
 /* functions about interacting with the daterange picker */
 $(function () {
@@ -82,7 +82,7 @@ function changeGradient() {
         'rgba(127, 0, 63, 1)',
         'rgba(191, 0, 31, 1)',
         'rgba(255, 0, 0, 1)'
-    ]
+    ];
     heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
 }
 
@@ -120,68 +120,57 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
             'end_date': end_date
         }, 
         function (data) {
-            route = data['route'];
             entries = data['heatmap'];
-        }).done(function () {
-            var startpoint = route['origin'];
-            var destination = route['destination'];
+        }).done(function (data) {
+            var startpoint = data['origin'];
+            var destination = data['destination'];
+            var all_waypoints = data['waypoints'];
+            var endpoint = destination;
             var waypoints = [];
-            var intermitent_route = {}
+            var intermitent_route = {};
+            var route_colors=["blue", "red", "yellow", "green", "purple"];
             // build the route by constructing smaller routes
-            for (var i = 0; i < entries.length; i += 8) {
-                var endpoint;
-                // choose an endpoint
-                if (entries.length < i + 8) {
-                    endpoint = destination;
-                } else {
-                    endpoint = new google.maps.LatLng(entries[i + 7][0], entries[i + 7][1]);
-                }
+            var color_counter = 0;
+            for (var i = 0; i < all_waypoints.length; i += 8) {
+
                 // build the waypoints
                 var j;
-                var loop_stop = (7 > entries.length - i) ? entries.length - i : 7;
+                var loop_stop = (7 > all_waypoints.length - i) ? (all_waypoints.length - i) : 6;
                 for (j = i; j < i + loop_stop; j++) {
-                    waypoints.push({'location': new google.maps.LatLng(entries[j][0], entries[j][1]), 'stopover': false});
+                    waypoints.push({'location': all_waypoints[j]['location'], 'stopover': false});
                 }
                 intermitent_route['origin'] = startpoint;
                 intermitent_route['destination'] = endpoint;
                 intermitent_route['travelMode'] = 'DRIVING';
                 intermitent_route['waypoints'] = waypoints;
-                console.log(waypoints.length);
-                directionsService.route(intermitent_route,
-                    function (response, status) {
-                        if (status === 'OK') {
-                            console.log("here");
-                            var customDirectionsDisplay = new google.maps.DirectionsRenderer;
-                            customDirectionsDisplay.setMap(map);
-                            customDirectionsDisplay.setDirections(response);
-    
-                            $('#submit-route-query').after("<span>Success</span>");
-                        } else {
-                            window.alert('Directions request failed due to ' + status);
-                        }
-                });
-                waypoints = [];
-                //console.log(waypoints);
-                //intermitent_route['waypoints'] = waypoints;
-                startpoint = endpoint;
 
+                if (waypoints.length > 0) {
+                    directionsService.route(intermitent_route,
+                        function (response, status) {
+                            if (status === 'OK') {
+                                var customDirectionsDisplay = new google.maps.DirectionsRenderer({
+                                    polylineOptions: {
+                                        strokeColor: route_colors[color_counter]
+                                    }
+                                });
+                                if (color_counter == 4) {
+                                    color_counter = 0;
+                                } else {
+                                    color_counter++;
+                                }
+                                customDirectionsDisplay.setMap(map);
+                                customDirectionsDisplay.setDirections(response);
+
+                            } else {
+                                window.alert("There was something wrong with our data. Please contact support.")
+                            }
+                        });
+                    waypoints = [];
+                }
             }
             heatmap = new google.maps.visualization.HeatmapLayer({
-                            data: getPoints(),
-                            map: map
+                    data: getPoints(),
+                    map: map
             });
-            // directionsService.route(route,
-            //     function (response, status) {
-            //         if (status === 'OK') {
-            //             directionsDisplay.setDirections(response);
-            //             heatmap = new google.maps.visualization.HeatmapLayer({
-            //                 data: getPoints(),
-            //                 map: map
-            //             });
-            //             $('#submit-route-query').after("<span>Success</span>");
-            //         } else {
-            //             window.alert('Directions request failed due to ' + status);
-            //         }
-            //     });
         });
 }
