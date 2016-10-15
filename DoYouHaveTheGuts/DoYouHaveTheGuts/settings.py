@@ -40,8 +40,8 @@ INSTALLED_APPS = [
 
     # our apps
     'pss',
-    'notify'
-    'crispy_forms',
+    'notify',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
