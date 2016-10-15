@@ -19,14 +19,15 @@
     <a href="/map/">Map</a>
 
     <div class="jumbotron text-center search_bg">
-        <h1 style="margin-top:-5px; color:#ffffff; text-shadow: 2px 2px #000000;">Your first point for local police news</h1>
+        <h1 style="margin-top:-5px; color:#ffffff; text-shadow: 2px 2px #000000;">Your first point for local police
+            news</h1>
         <br/>
         <form autocomplete="off" class="form-horizontal" action="/search/" method="get"
               accept-charset="utf-8">
             <div class="input-group">
                 <input value="" class="form-control input-lg" placeholder="What do you need help with?" type="text"
                        name="search-term" id="search-term">
-            <span class="input-group-btn">
+                <span class="input-group-btn">
                <button class="btn btn-default btn-lg" type="submit" id="addressSearch">
                    <i class="glyphicon glyphicon-search" aria-hidden="true"></i>
                </button>
@@ -34,5 +35,7 @@
             </div>
         </form>
     </div>
+
+    {% include 'pss/news_table.html' %}
 
 {% endblock %}
