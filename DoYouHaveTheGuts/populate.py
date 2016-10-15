@@ -3,7 +3,7 @@ Populate the database with dummy data
 """
 import os
 import django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DoYouHaveTheGuts.seetings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DoYouHaveTheGuts.settings')
 django.setup()
 
 from django.contrib.auth.models import User
