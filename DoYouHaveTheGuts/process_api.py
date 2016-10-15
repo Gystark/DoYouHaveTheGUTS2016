@@ -1,11 +1,8 @@
-import os
-import django
 import requests
 from decimal import Decimal
 import _operator
-#os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DoYouHaveTheGuts.settings')
-#django.setup()
-from pss.models import Crime, Station
+
+from pss.models import Station
 
 app_token = 'FDC7kyefIjOvwcMZ0Z9NkFJJ8'
 num_entries = 40
@@ -38,25 +35,25 @@ def get_station_data():
     return data
 
 
-def save_crime_data(data):
-    """
-    Save the supplied crime data to the database.
-    Note that the district numbers have leading zeroes removed.
-    :param data: a list of dictionaries of crime datato save
-    """
-    for crime in data:
-        try:
-            cr = Crime.objects.get_or_create(crime_id=crime['id'],
-                                        date=crime['date'],
-                                        block=crime['block'],
-                                        type=crime['primary_type'],
-                                        subtype=crime['description'],
-                                        district=Station.objects.get(district=int(crime['district'])),
-                                        latitude=Decimal(crime['latitude']),
-                                        longitude=Decimal(crime['longitude']))[0]
-            cr.save()
-        except KeyError:
-            pass
+# def save_crime_data(data):
+#     """
+#     Save the supplied crime data to the database.
+#     Note that the district numbers have leading zeroes removed.
+#     :param data: a list of dictionaries of crime datato save
+#     """
+#     for crime in data:
+#         try:
+#             cr = Crime.objects.get_or_create(crime_id=crime['id'],
+#                                         date=crime['date'],
+#                                         block=crime['block'],
+#                                         type=crime['primary_type'],
+#                                         subtype=crime['description'],
+#                                         district=Station.objects.get(district=int(crime['district'])),
+#                                         latitude=Decimal(crime['latitude']),
+#                                         longitude=Decimal(crime['longitude']))[0]
+#             cr.save()
+#         except KeyError:
+#             pass
 
 
 def save_station_data(data):

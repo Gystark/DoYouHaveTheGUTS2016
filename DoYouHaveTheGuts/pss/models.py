@@ -54,20 +54,3 @@ class Station(models.Model):
 
     def __str__(self):
         return str(self.district)
-
-
-class Crime(models.Model):
-    """
-    Model to hold crime data pulled from the City of Chicago dataset
-    """
-    crime_id = models.IntegerField(primary_key=True)
-    date = models.DateTimeField()
-    block = models.CharField(max_length=255)
-    type = models.CharField(max_length=255, choices=TYPE_CHOICES)
-    subtype = models.CharField(max_length=255)
-    district = models.ForeignKey(Station)
-    latitude = models.DecimalField(max_digits=30, decimal_places=15)
-    longitude = models.DecimalField(max_digits=30, decimal_places=15)
-
-    def __str__(self):
-        return str(self.crime_id)

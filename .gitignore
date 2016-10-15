@@ -140,3 +140,4 @@ fabric.properties
 .gitignore
 .idea/
 DoYouHaveTheGuts/pss/migrations/0001_initial.py
+/DoYouHaveTheGuts/Crimes_-_2001_to_present.csv

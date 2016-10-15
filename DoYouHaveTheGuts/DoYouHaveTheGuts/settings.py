@@ -77,6 +77,15 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
+    'crimes': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'guts',
+        'USER': 'guts',
+        'PASSWORD': 'guts',
+        'HOST': 'localhost',
+        'PORT': 5437,
+        'CONN_MAX_AGE': None
     }
 }
 
@@ -107,11 +116,11 @@ LANGUAGE_CODE = 'en-gb'
 
 TIME_ZONE = 'Europe/London'
 
-USE_I18N = True
+USE_I18N = False
 
-USE_L10N = True
+USE_L10N = False
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
