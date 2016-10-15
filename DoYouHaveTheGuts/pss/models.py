@@ -49,6 +49,7 @@ class Station(models.Model):
     """
     district = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=500)
+    address = models.CharField(max_length=500, default='')
     latitude = models.DecimalField(max_digits=30, decimal_places=15)
     longitude = models.DecimalField(max_digits=30, decimal_places=15)
 
