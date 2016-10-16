@@ -4,39 +4,69 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <title>Directions service</title>
+
     <script src="{% static 'pss/view_map.js' %}"></script>
     <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlVrFeXvJ6O2ejJz79L1etyvLlUQhDBmo&libraries=visualization&callback=initMap"></script>
+            src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDlVrFeXvJ6O2ejJz79L1etyvLlUQhDBmo&libraries=visualization,places&callback=initMap"></script>
 
 {% endblock %}
 {% block content %}
-    <div class="row">
-        <div class="form-group form-inline" id="mapcontrols">
-            <div id="reportrange" class="reportrange form-control">
-                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-                <span id="daterange-picker-holder"></span> <b class="caret"></b>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <h4>District patrol planning</h4>
+                <form>
+                    <div class="form-group">
+                        <label for="reportrange">Choose a timeframe</label>
+                        <div id="reportrange" class="reportrange form-control">
+                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                            <span id="daterange-picker-holder"></span> <b class="caret"></b>
+                        </div>
+                    </div>
+{#                        <script>#}
+{#                            $('input[name="daterange"]').daterangepicker();#}
+{#                        </script>#}
+                    <div class="form-group">
+                        <label for="district-dropdown">Choose a police district</label>
+                        <select class="form-control" id="district-dropdown">
+            {#                {% for district in districts %}#}
+            {#                    <option class="district-select" value="{{ district.district }}">{{ district.name }}</option>#}
+            {#                {% endfor %}#}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="crime-dropdown">Base patrol route on a type of crime</label>
+                        <select class="form-control" id="crime-dropdown">
+                            <option value="all">All Crimes</option>
+                            {% for crime in types_of_crime %}
+                                <option class="crime-select" value="{{ crime }}">{{ crime }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="submit-route-query" type="button">Submit</button>
+                    </div>
+                </form>
             </div>
-            <script>
-                $('input[name="daterange"]').daterangepicker();
-            </script>
-            <select class="form-control" id="district-dropdown">
-                {% for district in districts %}
-                    <option class="district-select" value="{{ district.district }}">{{ district.name }}</option>
-                {% endfor %}
-            </select>
+               <div class="col-lg-8">
+                   <div class="map-switchers">
+                       <form class="form-inline">
+                            <div class="form-group" id="heatmap-checkobx-group">
+                                <input id="turn-heat-on" class="js-switch" type="checkbox" checked/>
+                                <label for="turn-heat-on">Show crime heatmap for the past year</label>
+                            </div>
+                           <div class="form-group">
+                                <input id="turn-stations-on" class="js-switch" type="checkbox" checked="true"/>
+                                <label for="turn-stations-on">Show police stations</label>
+                            </div>
+                       </form>
+                   </div>
+                   <div id="map" style="width:100%; height:500px"></div>
+               </div>
+            </div>
 
-            <select class="form-control" id="crime-dropdown">
-                <option value="all">All</option>
-                {% for crime in types_of_crime %}
-                    <option class="crime-select" value="{{ crime }}">{{ crime }}</option>
-                {% endfor %}
-            </select>
-            <button id="submit-route-query" type="button" class="btn btn-secondary">Submit</button>
-        </div>
 
     </div>
-    <div class="row">
-        <div id="map" class="col-md-12"></div>
-    </div>
+
 {% endblock %}
 
