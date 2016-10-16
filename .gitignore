@@ -141,3 +141,6 @@ fabric.properties
 .idea/
 DoYouHaveTheGuts/pss/migrations/0001_initial.py
 /DoYouHaveTheGuts/Crimes_-_2001_to_present.csv
+
+# database
+db.sqlite3

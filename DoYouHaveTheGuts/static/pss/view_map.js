@@ -3,6 +3,9 @@ var heat_on = false;
 
 /* functions about interacting with the daterange picker */
 $(function () {
+    var start = moment().subtract(14, 'days');
+    var end = moment().subtract(7, 'days');
+
     function cb(start, end) {
         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
     }
@@ -15,6 +18,8 @@ $(function () {
     });
 
     $('#reportrange').daterangepicker({
+        startDate: start,
+        endDate: end,
         ranges: {
             'Today': [moment(), moment()],
             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -24,6 +29,34 @@ $(function () {
             'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
     }, cb);
+
+    cb(start, end);
+
+});
+
+function getDateRangePickerEndDate() {
+    /* If there is no range displayed inside the span, this means we want to get
+     * all the orders, so simply return undefined in that case
+     */
+    var span_content = $('#daterange-picker-holder').html();
+    if(span_content === ''){
+        return undefined;
+    }
+    return $('#reportrange').data('daterangepicker').endDate.format('YYYY-MM-DDT23:59:59');
+}
+
+function getDateRangePickerStartDate(){
+    /* If there is no range displayed inside the span, this means we want to get
+     * all the orders, so simply return undefined in that case
+     */
+    var span_content = $('#daterange-picker-holder').html();
+    if(span_content === ''){
+        return undefined;
+    }
+    return $('#reportrange').data('daterangepicker').startDate.format('YYYY-MM-DDT00:00:00');
+}
+
+$(document).ready(function(){
 
     $('#turn-heat-on').on('change', function() {
         var url = "https://data.cityofchicago.org/resource/6zsd-86xi.json?$where=date between '2015-01-10T12:00:00' and '2016-01-10T14:00:00'";
@@ -49,29 +82,8 @@ $(function () {
             heat_on = true;
         });
     });
+
 });
-
-function getDateRangePickerEndDate() {
-    /* If there is no range displayed inside the span, this means we want to get
-     * all the orders, so simply return undefined in that case
-     */
-    var span_content = $('#daterange-picker-holder').html();
-    if(span_content === ''){
-        return undefined;
-    }
-    return $('#reportrange').data('daterangepicker').endDate.format('YYYY-MM-DDT23:59:59');
-}
-
-function getDateRangePickerStartDate(){
-    /* If there is no range displayed inside the span, this means we want to get
-     * all the orders, so simply return undefined in that case
-     */
-    var span_content = $('#daterange-picker-holder').html();
-    if(span_content === ''){
-        return undefined;
-    }
-    return $('#reportrange').data('daterangepicker').startDate.format('YYYY-MM-DDT00:00:00');
-}
 
 function initMap() {
     var directionsService = new google.maps.DirectionsService;

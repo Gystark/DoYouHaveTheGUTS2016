@@ -14,18 +14,6 @@ headers = {
 }
 
 
-def get_crime_data():
-    url = "https://data.cityofchicago.org/resource/6zsd-86xi.json" + "?$limit=" + str(num_entries)
-    data = ''
-
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        data = response.json()
-        print(data)
-
-    return data
-
-
 def get_station_data():
     url = "https://data.cityofchicago.org/resource/9rg7-mz9y.json"
     data = ''
@@ -36,27 +24,6 @@ def get_station_data():
         print(data)
 
     return data
-
-
-def save_crime_data(data):
-    """
-    Save the supplied crime data to the database.
-    Note that the district numbers have leading zeroes removed.
-    :param data: a list of dictionaries of crime datato save
-    """
-    for crime in data:
-        try:
-            cr = Crime.objects.get_or_create(crime_id=crime['id'],
-                                        date=crime['date'],
-                                        block=crime['block'],
-                                        type=crime['primary_type'],
-                                        subtype=crime['description'],
-                                        district=Station.objects.get(district=int(crime['district'])),
-                                        latitude=Decimal(crime['latitude']),
-                                        longitude=Decimal(crime['longitude']))[0]
-            cr.save()
-        except KeyError:
-            pass
 
 
 def save_station_data(data):
@@ -134,5 +101,4 @@ def hottest_beats(district, start_time, end_time, type_of_crime, all_types=False
     return route_info
 
 # save
-#save_station_data(get_station_data())
-# save_crime_data(get_crime_data())
+save_station_data(get_station_data())
