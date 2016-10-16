@@ -1,4 +1,4 @@
-var heatmap, map, entries;
+var heatmap, map, entries, heatmap_global;
 var heat_on = false;
 var year_heat_points = [];
 var police_station_markers = [];
@@ -71,17 +71,12 @@ $(function () {
         startDate: start,
         endDate: end,
         ranges: {
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
             'Last 30 Days': [moment().subtract(29, 'days'), moment()],
             'This Month': [moment().startOf('month'), moment().endOf('month')],
             'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
     }, cb);
-
     cb(start, end);
-
 });
 
 function getDateRangePickerEndDate() {
@@ -116,11 +111,12 @@ $(document).ready(function(){
     toggleHeat.onchange = function() {
         if (toggleHeat.checked) {
             if (year_heat_points.length > 0) {
-                heatmap = new google.maps.visualization.HeatmapLayer({
+                heatmap_global = new google.maps.visualization.HeatmapLayer({
                         data: year_heat_points,
                         map: map
                 });
             } else {
+                //console.log("here");
                 var url = "https://data.cityofchicago.org/resource/6zsd-86xi.json?$where=date between '2015-01-10T12:00:00' and '2016-01-10T14:00:00'";
                 $.ajax({
                     url: url,
@@ -134,14 +130,14 @@ $(document).ready(function(){
                         if (data[i]['latitude'] != null && data[i]['longitude'] != null)
                         year_heat_points.push(new google.maps.LatLng(data[i]['latitude'], data[i]['longitude']));
                     }
-                    heatmap = new google.maps.visualization.HeatmapLayer({
+                    heatmap_global = new google.maps.visualization.HeatmapLayer({
                             data: year_heat_points,
                             map: map
                     });
                 });
             }
         } else {
-            heatmap.setMap(null);
+            heatmap_global.setMap(null);
         }
     };
     var togglePoliceStations = document.querySelector('#turn-stations-on');
@@ -152,29 +148,24 @@ $(document).ready(function(){
                     police_station_markers[j].setVisible(true);
                 }
             } else {
-                setTimeout(getPlaces(10), 100000);
-                setTimeout(getPlaces(20), 10000);
-                // for (var i = 0; i < police_stations.length; i++) {
-                //     var station_name = police_stations[i][1];
-                //     console.log(station_name);
-                //     placesService.getDetails({
-                //         placeId: police_stations[i][0]
-                //     }, function (place, status) {
-                //         if (status === google.maps.places.PlacesServiceStatus.OK) {
-                //             console.log("here");
-                //             var marker = new google.maps.Marker({
-                //                 'map': map,
-                //                 'position': place.geometry.location
-                //             });
-                //             google.maps.event.addListener(marker, 'click', function () {
-                //                 infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
-                //                     place.formatted_address + '</div>');
-                //                 infowindow.open(map, this);
-                //             });
-                //             police_station_markers.push(marker);
-                //         }
-                //     });
-                // }
+                for (var i = 0; i < police_stations.length; i++) {
+                    placesService.getDetails({
+                        placeId: police_stations[i][0]
+                    }, function (place, status) {
+                        if (status === google.maps.places.PlacesServiceStatus.OK) {
+                            var marker = new google.maps.Marker({
+                                'map': map,
+                                'position': place.geometry.location
+                            });
+                            google.maps.event.addListener(marker, 'click', function () {
+                                infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
+                                    place.formatted_address + '</div>');
+                                infowindow.open(map, this);
+                            });
+                            police_station_markers.push(marker);
+                        }
+                    });
+                }
             }
         } else {
             for (var j = 0; j < police_station_markers.length; j++) {
@@ -184,30 +175,6 @@ $(document).ready(function(){
     }
 });
 
-function getPlaces(numPlaces) {
-    for (var i = 0; i < numPlaces; i++) {
-        var station_name = police_stations[i][1];
-        console.log(station_name);
-        placesService.getDetails({
-            placeId: police_stations[i][0]
-        }, function (place, status) {
-            if (status === google.maps.places.PlacesServiceStatus.OK) {
-                console.log("here");
-                var marker = new google.maps.Marker({
-                    'map': map,
-                    'position': place.geometry.location
-                });
-                google.maps.event.addListener(marker, 'click', function () {
-                    infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
-                        place.formatted_address + '</div>');
-                    infowindow.open(map, this);
-                });
-                police_station_markers.push(marker);
-            }
-        });
-    }
-}
-
 function initMap() {
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -216,26 +183,8 @@ function initMap() {
         zoom: 12,
         center: {lat: 41.85, lng: -87.65}
     });
-
     infowindow = new google.maps.InfoWindow();
     placesService = new google.maps.places.PlacesService(map);
-
-    // placesService.getDetails({
-    //       placeId: 'ChIJ_U-yLYYsDogRtsVtHAvuj3E'
-    //     }, function(place, status) {
-    //       if (status === google.maps.places.PlacesServiceStatus.OK) {
-    //
-    //         var marker = new google.maps.Marker({
-    //           'map': map,
-    //           'position': place.geometry.location
-    //         });
-    //         google.maps.event.addListener(marker, 'click', function() {
-    //           infowindow.setContent('<div><strong>' + station_name + '</strong><br>' +
-    //             place.formatted_address + '</div>');
-    //           infowindow.open(map, this);
-    //         });
-    //       }
-    //     });
 
     directionsDisplay.setMap(map);
 
