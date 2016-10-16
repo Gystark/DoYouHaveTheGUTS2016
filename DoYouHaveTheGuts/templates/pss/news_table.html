@@ -3,7 +3,7 @@
         <div class="col-md-8 col-md-offset-1">
             {% for piece_of_news in news %}
                 <div>
-                    <h2><a href="{ % url 'piece_of_news' %}">{{ piece_of_news.title }}</a></h2>
+                    <h2><a href="{% url 'piece_of_news' piece_of_news.slug %}">{{ piece_of_news.title }}</a></h2>
                     <p>{{ piece_of_news.description }}</p>
                 </div>
             {% endfor %}

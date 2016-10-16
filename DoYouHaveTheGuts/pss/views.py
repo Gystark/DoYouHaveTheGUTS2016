@@ -61,6 +61,7 @@ def view_piece_of_news(request, piece_of_news_name_slug):
     return render(request, 'pss/piece_of_news.html',context)
 
 
+
 class UserRegistrationView(CreateView):
     form_class = UserCreationForm
     template_name = 'registration/registration.html'
