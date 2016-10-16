@@ -1,5 +1,55 @@
 var heatmap, map, entries;
 var heat_on = false;
+var year_heat_points = [];
+var police_station_markers = [];
+var police_stations = [
+    [
+        'EiUyIEUgR3JhbmQgQXZlLCBDaGljYWdvLCBJTCA2MDYxMSwgVVNB',
+        'Grand Central'
+    ],
+    [
+        'ChIJyzbdbbzRD4gRudaLT2YMq3U',
+        'Rogers Park'
+    ],
+    [
+        'ChIJYwtQpeQkDogRCMMSHo5AR9g',
+        'Morgan Park'
+    ],
+    [
+        'ChIJCZRGtv7RD4gRKsDivi_tElk',
+        'Lincoln'
+    ],
+    [
+        'ChIJ5eC7BbHTD4gRbJPRL85Je_M',
+        'Town Hall'
+    ],
+    [
+        'ChIJ2R8R1DDTD4gRvnfku2kJXUQ',
+        'Near North'
+    ],
+    [
+        'ChIJVdeF58_ND4gRMFA_0bFnCzg',
+        'Albany Park'
+    ],
+    [
+        'ChIJ8bGFlRzMD4gRBQXfx6aJKt0',
+        'Jefferson Park'
+    ],
+    ['ChIJ_U-yLYYsDogRtsVtHAvuj3E', 'Central'],
+    ["Eiw1MTAxIFMgV2VudHdvcnRoIEF2ZSwgQ2hpY2FnbywgSUwgNjA2MDksIFVTQQ", "Wentworth"],
+    ["EjA3MDQwIFMgQ290dGFnZSBHcm92ZSBBdmUsIENoaWNhZ28sIElMIDYwNjM3LCBVU0E", "Grand Crossing"],
+    ["EicyMjU1IEUgMTAzcmQgU3QsIENoaWNhZ28sIElMIDYwNjE3LCBVU0E", "South Chicago"],
+    ["ChIJD_JD3osmDogRaxeqSnR1vog", "Calumet"],
+    ["ChIJ_7PlGWwvDogRuGGZCl0FIPk", "Gresham"],
+    ["ChIJFxkSVlQuDogRsoTJI4DmdAg", "Englewood"],
+    ["ChIJVeYUFM0xDogRdyQXgHGwNLg", "Chicago Lawn"],
+    ["ChIJSwx4l0csDogRcXYCC5DAK0k", "Deering"],
+    ["ChIJf5j6vGIyDogRgbIoD3CmgLM", "Odgen"],
+    ["ChIJzzWLo5kyDogRFe6LF6g-0I0", "Harrison"],
+    ["ChIJjdXDkP0sDogR7uYeJZ1JUk8","Near West"],
+    ["ChIJmVC8_WHND4gRqKAO_28an0k", "Shakespeare"],
+    ["ChIJ3U3ZEV0zDogRjD8SymPsopc", "Austin"]
+];
 
 /* functions about interacting with the daterange picker */
 $(function () {
@@ -57,41 +107,136 @@ function getDateRangePickerStartDate(){
 }
 
 $(document).ready(function(){
-
-    $('#turn-heat-on').on('change', function() {
-        var url = "https://data.cityofchicago.org/resource/6zsd-86xi.json?$where=date between '2015-01-10T12:00:00' and '2016-01-10T14:00:00'";
-        $.ajax({
-            url: url,
-            type: "GET",
-            data: {
-              "$limit" : 5000,
-              "$$app_token" : "FDC7kyefIjOvwcMZ0Z9NkFJJ8"
-            }
-        }).done(function(data) {
-          //alert("Retrieved " + data.length + " records from the dataset!");
-          console.log(data);
-            var points = [];
-            // for (var i = 0; i < data.length; i++) {
-            //     if (data[i]['latitude'] != null && data[i]['longitude'] != null)
-            //     points.push(new google.maps.LatLng(data[i]['latitude'], data[i]['longitude']));
-            // }
-            // heatmap = new google.maps.visualization.HeatmapLayer({
-            //         data: points,
-            //         map: map
-            // });
-            heat_on = true;
-        });
+    var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+    elems.forEach(function(html) {
+      var switchery = new Switchery(html, { size: 'small' });
     });
 
+    var toggleHeat = document.querySelector('#turn-heat-on');
+    toggleHeat.onchange = function() {
+        if (toggleHeat.checked) {
+            if (year_heat_points.length > 0) {
+                heatmap = new google.maps.visualization.HeatmapLayer({
+                        data: year_heat_points,
+                        map: map
+                });
+            } else {
+                var url = "https://data.cityofchicago.org/resource/6zsd-86xi.json?$where=date between '2015-01-10T12:00:00' and '2016-01-10T14:00:00'";
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    data: {
+                      "$limit" : 5000,
+                      "$$app_token" : "FDC7kyefIjOvwcMZ0Z9NkFJJ8"
+                    }
+                }).done(function(data) {
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i]['latitude'] != null && data[i]['longitude'] != null)
+                        year_heat_points.push(new google.maps.LatLng(data[i]['latitude'], data[i]['longitude']));
+                    }
+                    heatmap = new google.maps.visualization.HeatmapLayer({
+                            data: year_heat_points,
+                            map: map
+                    });
+                });
+            }
+        } else {
+            heatmap.setMap(null);
+        }
+    };
+    var togglePoliceStations = document.querySelector('#turn-stations-on');
+    togglePoliceStations.onchange = function() {
+        if (togglePoliceStations.checked) {
+            if (police_station_markers.length > 0) {
+                for (var j = 0; j < police_station_markers.length; j++) {
+                    police_station_markers[j].setVisible(true);
+                }
+            } else {
+                setTimeout(getPlaces(10), 100000);
+                setTimeout(getPlaces(20), 10000);
+                // for (var i = 0; i < police_stations.length; i++) {
+                //     var station_name = police_stations[i][1];
+                //     console.log(station_name);
+                //     placesService.getDetails({
+                //         placeId: police_stations[i][0]
+                //     }, function (place, status) {
+                //         if (status === google.maps.places.PlacesServiceStatus.OK) {
+                //             console.log("here");
+                //             var marker = new google.maps.Marker({
+                //                 'map': map,
+                //                 'position': place.geometry.location
+                //             });
+                //             google.maps.event.addListener(marker, 'click', function () {
+                //                 infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
+                //                     place.formatted_address + '</div>');
+                //                 infowindow.open(map, this);
+                //             });
+                //             police_station_markers.push(marker);
+                //         }
+                //     });
+                // }
+            }
+        } else {
+            for (var j = 0; j < police_station_markers.length; j++) {
+                police_station_markers[j].setVisible(false);
+            }
+        }
+    }
 });
+
+function getPlaces(numPlaces) {
+    for (var i = 0; i < numPlaces; i++) {
+        var station_name = police_stations[i][1];
+        console.log(station_name);
+        placesService.getDetails({
+            placeId: police_stations[i][0]
+        }, function (place, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                console.log("here");
+                var marker = new google.maps.Marker({
+                    'map': map,
+                    'position': place.geometry.location
+                });
+                google.maps.event.addListener(marker, 'click', function () {
+                    infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
+                        place.formatted_address + '</div>');
+                    infowindow.open(map, this);
+                });
+                police_station_markers.push(marker);
+            }
+        });
+    }
+}
 
 function initMap() {
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
+
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,
         center: {lat: 41.85, lng: -87.65}
     });
+
+    infowindow = new google.maps.InfoWindow();
+    placesService = new google.maps.places.PlacesService(map);
+
+    // placesService.getDetails({
+    //       placeId: 'ChIJ_U-yLYYsDogRtsVtHAvuj3E'
+    //     }, function(place, status) {
+    //       if (status === google.maps.places.PlacesServiceStatus.OK) {
+    //
+    //         var marker = new google.maps.Marker({
+    //           'map': map,
+    //           'position': place.geometry.location
+    //         });
+    //         google.maps.event.addListener(marker, 'click', function() {
+    //           infowindow.setContent('<div><strong>' + station_name + '</strong><br>' +
+    //             place.formatted_address + '</div>');
+    //           infowindow.open(map, this);
+    //         });
+    //       }
+    //     });
+
     directionsDisplay.setMap(map);
 
     var onChangeHandler = function () {
