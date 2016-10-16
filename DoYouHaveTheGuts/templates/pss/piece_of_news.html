@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% block title %}{{ piece_of_news.title }}{% endblock %}
-<div class="news-body">
-        <div class="col-md-8 col-md-offset-1">
-            {{ piece_of_news.title }}
-            {{ piece_of_news.body }}
+{% block content %}
+<div class="news-body" style="margin-top: 2%;">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>{{ piece_of_news.title }}</h2><br>
+            <p class="lead" style="text-align: justify;">{{ piece_of_news.body }}</p>
         </div>
 </div>
+{% endblock %}
 
