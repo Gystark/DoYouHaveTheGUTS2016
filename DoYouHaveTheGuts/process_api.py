@@ -1,6 +1,5 @@
 import requests
 from decimal import Decimal
-import _operator
 
 from pss.models import Station
 
