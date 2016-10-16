@@ -1,9 +1,5 @@
-import os
-import django
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DoYouHaveTheGuts.settings')
-django.setup()
 from pss.models import News
+
 
 def populate():
     news_file = open('news.txt', 'r')
