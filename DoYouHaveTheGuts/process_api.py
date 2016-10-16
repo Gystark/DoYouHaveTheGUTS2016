@@ -83,7 +83,7 @@ def hottest_beats(district, start_time, end_time, type_of_crime, all_types=False
     route_info['origin'] = station.address
     route_info['destination'] = station.address
     route_info['travelMode'] = 'DRIVING'
-    # route_info['route']['optimizeWaypoints'] = True
+    route_info['optimizeWaypoints'] = True
     route_info['waypoints'] = []
 
     for item in crime_map:
