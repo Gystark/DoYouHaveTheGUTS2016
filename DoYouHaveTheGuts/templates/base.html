@@ -21,82 +21,63 @@
 
 <body>
 <div class="container container-fluid" id="all-content">
-<nav class="navbar navbar-default bars " id="nav">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="#" class="a-disabled navbar-left" id="logo"><img src="{% static 'logo.png' %}" width="50x" height="auto"></a>
-            <a class="navbar-brand a-disabled" href="#">Chicago PSS</a>
-        </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right menuitems">
-                <li><a href="/"><i class="glyphicon glyphicon-home"></i> <span class="sr-only">(current)</span></a>
-                </li>
-                <li><a href="{% url 'map' %}">Map</a></li>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
+    <!--status bar -->
+    <nav class="navbar navbar-default bars" id="statusbar">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="#" class="a-disabled navbar-left" id="logo"><img src="{% static 'logo.png' %}" width="50x"
+                                                                          height="auto"></a>
+                <a class="navbar-brand a-disabled" href="#">Chicago PSS</a>
+            </div>
 
-<!--status bar -->
-<nav class="navbar navbar-default bars" id="statusbar">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                {% if user.is_authenticated %}
-                    <li><a href="#" class="a-disabled"><i class="glyphicon glyphicon-user"></i>&nbsp;Welcome <strong>{{ user.username }}</strong></a></li>
-                    <li><a href="#" class="a-disabled"><i
-                            class="glyphicon glyphicon-time"></i>&nbsp;{% now "d N Y, P" %}</a></li>
-                {% else %}
-                    <li><a href="#" class="a-disabled"><i
-                            class="glyphicon glyphicon-time"></i>&nbsp;{% now "d N Y, P" %}</a>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    {% if user.is_authenticated %}
+                        <li><a href="#" class="a-disabled"><i class="glyphicon glyphicon-user"></i>&nbsp;Welcome
+                            <strong>{{ user.username }}</strong></a></li>
+                    {% endif %}
+                    {#                    <li><a href="#" class="a-disabled"><i#}
+                    {#                            class="glyphicon glyphicon-time"></i>&nbsp;{% now "d N Y, P" %}</a>#}
+                </ul>
+                <ul class="nav navbar-nav navbar-right menuitems">
+                    <li><a href="/"><i class="glyphicon glyphicon-home"></i> <span class="sr-only">(current)</span></a>
                     </li>
-                {% endif %}
-            </ul>
-            <ul class="nav navbar-nav navbar-right menuitems">
-                {% if user.is_authenticated %}
-                    <li><a href="#"><i class="glyphicon glyphicon-flag"></i>&nbsp;<span id="notifications-number">{{ user.notifications.active.count }}</span> </a></li>
-                    <li><a href="{% url 'logout' %}"><i class="glyphicon glyphicon-log-out"></i>^&nbsp;Logout</a></li>
-                {% else %}
-                    <li><a href="{% url 'login' %}">Login / register</a></li>
-                {% endif %}
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
+                    <li><a href="{% url 'map' %}">Map</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="#"><i class="glyphicon glyphicon-flag"></i>&nbsp;<span
+                                id="notifications-number">{{ user.notifications.active.count }}</span> </a></li>
+                        <li><a href="{% url 'logout' %}"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Logout</a>
+                        </li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login / register</a></li>
+                    {% endif %}
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
 
-<script src="{% static "notify/notifyX.js" %}"></script>
-<div class="row">
-    <div class="notification-box-list">
-        {% if request.user.notifications.unread.count != 0 %}
-            {% render_notifications using request.user.notifications.unread.prefetch %}
-        {% endif %}
+    <script src="{% static "notify/notifyX.js" %}"></script>
+    <div class="row">
+        <div class="notification-box-list">
+            {% if request.user.notifications.unread.count != 0 %}
+                {% render_notifications using request.user.notifications.unread.prefetch %}
+            {% endif %}
+        </div>
     </div>
-</div>
 
-{% block content %}
+    {% block content %}
 
-{% endblock %}
+    {% endblock %}
 </div>
 </body>
 

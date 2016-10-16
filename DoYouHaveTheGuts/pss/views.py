@@ -5,6 +5,7 @@ from pss.models import Station, TYPE_CHOICES, News
 from pss.models import Station, TYPE_CHOICES
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView
+from notify.signals import notify
 
 
 def index(req):
@@ -54,6 +55,7 @@ def search(request):
 
 
 def view_piece_of_news(request, piece_of_news_name_slug):
+    notify.send(request.user, actor=request.user, recipient=request.user, verb="BREAKING NEWS - Donuts are free for Chicago Police officers!")
     context = {}
     if request.method == "GET":
         piece_of_news = News.objects.get(slug=piece_of_news_name_slug)

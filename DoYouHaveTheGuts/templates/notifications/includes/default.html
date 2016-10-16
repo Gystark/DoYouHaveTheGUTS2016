@@ -1,5 +1,5 @@
 <p data-nf-id="{{ notification.id }}" id="nf-{{ notification.id }}"
-   class="notification alert {% if notification.nf_type == 'warning' %}alert-warning{% elif notification.nf_type == 'error' %}alert-danger{% else %}alert-success{% endif %} text-center">
+   class="notification alert {% if notification.nf_type == 'warning' %}alert-warning{% elif notification.nf_type == 'error' %}alert-danger{% else %}alert-success{% endif %} text-center" style="margin-bottom:0">
     {% block notification %}
         {{ notification.verb }}
         <span class="timesince">{{ notification.created|timesince }} ago &nbsp;</span>
