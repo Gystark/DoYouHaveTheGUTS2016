@@ -64,10 +64,10 @@
                 {% if user.is_authenticated %}
                     <li><a href="#" class="a-disabled"><i class="glyphicon glyphicon-user"></i>&nbsp;Welcome <strong>{{ user.username }}</strong></a></li>
                     <li><a href="#" class="a-disabled"><i
-                            class="glyphicon glyphicon-time"></i>&nbsp;{% now "" %}</a></li>
+                            class="glyphicon glyphicon-time"></i>&nbsp;{% now "d N Y, P" %}</a></li>
                 {% else %}
                     <li><a href="#" class="a-disabled"><i
-                            class="glyphicon glyphicon-time"></i>&nbsp;{% now "" %}</a>
+                            class="glyphicon glyphicon-time"></i>&nbsp;{% now "d N Y, P" %}</a>
                     </li>
                 {% endif %}
             </ul>
