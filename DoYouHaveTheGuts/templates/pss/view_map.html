@@ -5,59 +5,63 @@
     <meta charset="utf-8">
     <title>Directions service</title>
     <style>
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      #map {
-        height: 100%;
-      }
-      #floating-panel {
-        position: absolute;
-        top: 10px;
-        left: 25%;
-        z-index: 5;
-        background-color: #fff;
-        padding: 5px;
-        border: 1px solid #999;
-        text-align: center;
-        font-family: 'Roboto','sans-serif';
-        line-height: 30px;
-        padding-left: 10px;
-      }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 100%;
+        }
+
+        #floating-panel {
+            position: absolute;
+            top: 10px;
+            left: 25%;
+            z-index: 5;
+            background-color: #fff;
+            padding: 5px;
+            border: 1px solid #999;
+            text-align: center;
+            font-family: 'Roboto', 'sans-serif';
+            line-height: 30px;
+            padding-left: 10px;
+        }
     </style>
     <script src="{% static 'pss/view_map.js' %}"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlVrFeXvJ6O2ejJz79L1etyvLlUQhDBmo&libraries=visualization&callback=initMap"></script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlVrFeXvJ6O2ejJz79L1etyvLlUQhDBmo&libraries=visualization&callback=initMap"></script>
 
 {% endblock %}
-<div class="row">
 {% block content %}
-    <div id="reportrange" class="reportrange" style="display: inline">
-        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-        <span id="daterange-picker-holder"></span> <b class="caret"></b>
+    <div class="row">
+        <div class="form-group">
+            <div id="reportrange" class="reportrange form-control">
+                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                <span id="daterange-picker-holder"></span> <b class="caret"></b>
+            </div>
+            <script>
+                $('input[name="daterange"]').daterangepicker();
+            </script>
+            <select class="form-control" id="district-dropdown">
+                {% for district in districts %}
+                    <option class="district-select" value="{{ district.district }}">{{ district.name }}</option>
+                {% endfor %}
+            </select>
+
+            <select class="form-control" id="crime-dropdown">
+                <option value="all">All</option>
+                {% for crime in types_of_crime %}
+                    <option class="crime-select" value="{{ crime }}">{{ crime }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button id="submit-route-query" type="button">Submit</button>
+        <input id="turn-heat-on" type="checkbox"/> Turn on the heat.
+
+
+        <div id="map"></div>
     </div>
-    <script>
-        $('input[name="daterange"]').daterangepicker();
-    </script>
-    <select id="district-dropdown">
-        {% for district in districts %}
-            <option class="district-select" value="{{ district.district }}">{{ district.name }}</option>
-        {% endfor %}
-    </select>
-
-    <select id="crime-dropdown">
-        <option value="all">All</option>
-        {% for crime in types_of_crime %}
-            <option class="crime-select" value="{{ crime }}">{{ crime }}</option>
-        {% endfor %}
-    </select>
-
-    <button id="submit-route-query" type="button">Submit</button>
-    <input id="turn-heat-on" type="checkbox"/> Turn on the heat.
-
-
-    <div id="map"></div>
-</div>
 {% endblock %}
 
