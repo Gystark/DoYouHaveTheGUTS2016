@@ -1,10 +1,7 @@
-import os
-import django
 import requests
 from decimal import Decimal
 import _operator
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DoYouHaveTheGuts.settings')
-django.setup()
+
 from pss.models import Station
 
 app_token = 'FDC7kyefIjOvwcMZ0Z9NkFJJ8'
