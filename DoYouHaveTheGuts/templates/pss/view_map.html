@@ -4,31 +4,7 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <title>Directions service</title>
-    <style>
-{#        html, body {#}
-{#            height: 100%;#}
-{#            margin: 0;#}
-{#            padding: 0;#}
-{#        }#}
 
-{#        #map {#}
-{#            height: 100%;#}
-{#        }#}
-
-        #floating-panel {
-            position: absolute;
-            top: 10px;
-            left: 25%;
-            z-index: 5;
-            background-color: #fff;
-            padding: 5px;
-            border: 1px solid #999;
-            text-align: center;
-            font-family: 'Roboto', 'sans-serif';
-            line-height: 30px;
-            padding-left: 10px;
-        }
-    </style>
     <script src="{% static 'pss/view_map.js' %}"></script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDlVrFeXvJ6O2ejJz79L1etyvLlUQhDBmo&libraries=visualization,places&callback=initMap"></script>
@@ -89,11 +65,7 @@
                </div>
             </div>
 
-{#        <div class="row">#}
-{#            <div class="col-lg-12">#}
-{#                #}
-{#            </div>#}
-{#        </div>#}
+
     </div>
 
 {% endblock %}

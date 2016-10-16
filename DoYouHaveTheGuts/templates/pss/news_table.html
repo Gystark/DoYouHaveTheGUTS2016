@@ -1,7 +1,12 @@
-
 <div class="news-table">
-        {% for piece_of_news in news %}
-            <h1>{{ piece_of_news.title }}</h1>
-            <p>{{ piece_of_news.description }}</p>
-        {% endfor %}
+    <div class="content">
+        <div class="col-md-8 col-md-offset-1">
+            {% for piece_of_news in news %}
+                <div>
+                    <h2><a href="{ % url 'piece_of_news' %}">{{ piece_of_news.title }}</a></h2>
+                    <p>{{ piece_of_news.description }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
