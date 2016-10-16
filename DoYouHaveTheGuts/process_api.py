@@ -1,10 +1,7 @@
-import os
-import django
 import requests
 from decimal import Decimal
 import _operator
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DoYouHaveTheGuts.settings')
-django.setup()
+
 from pss.models import Station
 
 app_token = 'FDC7kyefIjOvwcMZ0Z9NkFJJ8'
@@ -101,4 +98,4 @@ def hottest_beats(district, start_time, end_time, type_of_crime, all_types=False
     return route_info
 
 # save
-save_station_data(get_station_data())
+# save_station_data(get_station_data())
