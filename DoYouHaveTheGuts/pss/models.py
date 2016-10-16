@@ -70,12 +70,13 @@ class News(models.Model):
     body = models.TextField(default="")
     slug = models.SlugField()
 
-    def save(self, *args, **kwargs):
+    def save(self, send_notification=True, *args, **kwargs):
         if self.id is None:
-            admin = User.objects.filter(is_superuser=True)[0]
-            users = list(User.objects.all().exclude(id=admin.id))
-            notify.send(sender=admin, recipient_list=users, actor=admin,
-                        verb='New information added', description=self.title, nf_type='success')
+            if send_notification:
+                admin = User.objects.filter(is_superuser=True)[0]
+                users = list(User.objects.all().exclude(id=admin.id))
+                notify.send(sender=admin, recipient_list=users, actor=admin,
+                            verb='New information added', description=self.title, nf_type='success')
         self.slug = slugify(self.title)
         super(News, self).save(*args, **kwargs)
 
