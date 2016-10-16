@@ -8,7 +8,7 @@ from django.views.generic import CreateView
 
 
 def index(req):
-    news = News.objects.all();
+    news = News.objects.all()[:7]
     return render(req, "pss/index.html", {'news': news})
 
 
