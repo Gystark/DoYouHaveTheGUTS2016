@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% block title %}{{ piece_of_news.title }}{% endblock %}
-<div class="news-body">
-        <div class="col-md-8 col-md-offset-1">
-            {{ piece_of_news.title }}
-            {{ piece_of_news.body }}
+{% block content %}
+    <div class="news-body" style="margin-top: 2%;">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>{{ piece_of_news.title }}</h2><br>
+
+            <div class="row"><div class="col-md-6 col-md-offset-2"><img src="{% static 'zzline4.jpg' %}"></div></div>
+            <p class="lead" style="text-align: justify; margin-top: 2%;">{{ piece_of_news.body }}</p>
         </div>
-</div>
+    </div>
+{% endblock %}
 

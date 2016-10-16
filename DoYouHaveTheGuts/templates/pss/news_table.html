@@ -7,7 +7,7 @@
                     <h2><a href="{% url 'piece_of_news' piece_of_news.slug %}">{{ piece_of_news.title }}</a></h2>
                     <p>{{ piece_of_news.description }}</p>
                 </div>
-                <img src="{% static 'zzline4.jpg' %}"/>
+                <img src="{% static 'zzline4.jpg' %}" width="95%" height="auto">
             {% endfor %}
         </div>
     </div>
