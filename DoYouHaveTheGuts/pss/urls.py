@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^get_map_data/$', views.get_map_data, name='get_map_data'),
     url(r'^map/$', views.view_map, name='map'),
     url(r'^register/$', views.UserRegistrationView.as_view(), name='registration'),
+    url(r'^auto_complete/$', views.search, name='search')
 ]

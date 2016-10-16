@@ -17,6 +17,8 @@
 
         return t;
     }(document, "script", "twitter-wjs"));</script>
+
+    <script src="{% static 'pss/index.js' %}" ></script>
 {% endblock %}
 {% block content %}
 
@@ -30,11 +32,12 @@
     <div class="col-md-6 col-md-offset-1">
         <form>
             <div class="form-group">
-                <input type="search" class="form-control" placeholder="Search in news">
-
+                <input id="news-search" type="search" class="form-control" placeholder="Search in news">
             </div>
         </form>
-        {% include 'pss/news_table.html' %}
+        <div id="news-holder">
+            {% include 'pss/news_table.html' %}
+        </div>
     </div>
 
 {% endblock %}
