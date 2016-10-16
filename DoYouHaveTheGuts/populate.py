@@ -9,6 +9,9 @@ django.setup()
 from django.contrib.auth.models import User
 from process_api import save_station_data, get_station_data
 from populate_news import populate
+from pss.models import Station
+
+print(Station.objects.all())
 
 u1 = User.objects.create_user("Officer A", "officer1@chicagopolice.gov", "ilovemyjob")
 u1.save()
