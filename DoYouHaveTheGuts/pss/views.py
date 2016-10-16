@@ -53,12 +53,12 @@ def search(request):
     return render(request, 'pss/news_table.html', {'news': news})
 
 
-# def view_piece_of_news(request, piece_of_news_name_slug):
-#     context = {}
-#     if request.method == "GET":
-#         piece_of_news = News.objects.get(slug=piece_of_news_name_slug)
-#         context['piece_of_news'] = piece_of_news
-#     return render(request, 'pss/piece_of_news.html', context)
+def view_piece_of_news(request, piece_of_news_name_slug):
+    context = {}
+    if request.method == "GET":
+        piece_of_news = News.objects.get(slug=piece_of_news_name_slug)
+        context['piece_of_news'] = piece_of_news
+    return render(request, 'pss/piece_of_news.html',context)
 
 
 class UserRegistrationView(CreateView):
