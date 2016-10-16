@@ -15,6 +15,7 @@ def index(req):
 def view_map(req):
     stations = Station.objects.all()
     types_of_crime = [x[0] for x in TYPE_CHOICES]
+
     return render(req, 'pss/view_map.html', {
         'districts': stations,
         'types_of_crime': types_of_crime
