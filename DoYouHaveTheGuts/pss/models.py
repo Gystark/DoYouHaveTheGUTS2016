@@ -10,7 +10,7 @@ from notify.signals import notify
 # Based on https://www.isp.state.il.us/docs/6-260.pdf
 TYPE_CHOICES = (
     ('HOMICIDE', 'HOMICIDE'),
-    ('CRIMINAL SEXUALASSAULT', 'CRIMINAL SEXUALASSAULT'),
+    ('CRIMINAL SEXUAL ASSAULT', 'CRIMINAL SEXUAL ASSAULT'),
     ('ROBBERY', 'ROBBERY'),
     ('BATTERY', 'BATTERY'),
     ('RITUALISM', 'RITUALISM'),

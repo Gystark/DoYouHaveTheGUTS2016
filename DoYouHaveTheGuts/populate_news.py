@@ -6,6 +6,7 @@ django.setup()
 
 from pss.models import News
 
+
 def populate():
     news_file = open('news.txt', 'r', encoding='utf-8')
 

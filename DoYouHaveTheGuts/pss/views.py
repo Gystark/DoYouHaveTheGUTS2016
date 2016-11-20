@@ -9,7 +9,7 @@ from notify.signals import notify
 
 
 def index(req):
-    news = News.objects.all()[:7]
+    news = News.objects.all()[:6]
     return render(req, "pss/index.html", {'news': news})
 
 

@@ -45,7 +45,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     {% if user.is_authenticated %}
-                        <li><a href="#" class="a-disabled"><i class="glyphicon glyphicon-user"></i>&nbsp;Welcome
+                        <li><a class="a-disabled"><i class="glyphicon glyphicon-user"></i>&nbsp;Welcome
                             <strong>{{ user.username }}</strong></a></li>
                     {% endif %}
                     {#                    <li><a href="#" class="a-disabled"><i#}
@@ -56,7 +56,7 @@
                     </li>
                     <li><a href="{% url 'map' %}">Map</a></li>
                     {% if user.is_authenticated %}
-                        <li><a href="#"><i class="glyphicon glyphicon-flag"></i>&nbsp;<span
+                        <li><a class="a-disabled"><i class="glyphicon glyphicon-flag"></i>&nbsp;<span
                                 id="notifications-number">{{ user.notifications.active.count }}</span> </a></li>
                         <li><a href="{% url 'logout' %}"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Logout</a>
                         </li>
@@ -82,6 +82,4 @@
     {% endblock %}
 </div>
 </body>
-
-
 </html>

@@ -52,6 +52,7 @@ def hottest_beats(district, start_time, end_time, type_of_crime, all_types=False
     if not all_types:
         url = url + "&primary_type=" + type_of_crime
 
+    print(url)
     response = requests.get(url, headers=headers).json()
 
     crime_map = {}
