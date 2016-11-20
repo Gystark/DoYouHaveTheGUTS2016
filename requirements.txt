@@ -1,5 +1,13 @@
-requests==2.11.1
-django==1.10.2
-python-dateutil==2.5.3
-django-crispy-forms==1.6.0
+brotlipy==0.6.0
+cffi==1.9.1
+Django==1.10.3
+django-crispy-forms==1.6.1
+django-jsonfield==1.0.1
 django-notify-x==0.1.6
+pycparser==2.17
+python-dateutil==2.6.0
+pytz==2016.7
+requests==2.12.1
+six==1.10.0
+uWSGI==2.0.14
+whitenoise==3.2.2
