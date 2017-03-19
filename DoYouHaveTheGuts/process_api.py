@@ -4,7 +4,7 @@ import _operator
 
 from pss.models import Station
 
-app_token = 'FDC7kyefIjOvwcMZ0Z9NkFJJ8'
+app_token = 'TOKEN HERE'
 num_entries = 40
 headers = {
     'X-App-Token': app_token
@@ -33,10 +33,10 @@ def save_station_data(data):
         if station['district'] == "Headquarters":
             station['district'] = '26'
         stat = Station.objects.get_or_create(district=int(station['district']),
-                                      latitude=Decimal(station['latitude']),
-                                      longitude=Decimal(station['longitude']),
-                                      address=station['address'],
-                                      name=station['district_name'])[0]
+                                             latitude=Decimal(station['latitude']),
+                                             longitude=Decimal(station['longitude']),
+                                             address=station['address'],
+                                             name=station['district_name'])[0]
         stat.save()
 
 
@@ -76,7 +76,7 @@ def hottest_beats(district, start_time, end_time, type_of_crime, all_types=False
 
     n = len(crime_map)
 
-    crime_map = sorted(crime_map.items(), key=_operator.itemgetter(0))[n-5:][::-1]
+    crime_map = sorted(crime_map.items(), key=_operator.itemgetter(0))[n - 5:][::-1]
 
     route_info = {}
     station = Station.objects.get(district=district)
